@@ -6,6 +6,8 @@ Rakefile
 TODO
 lib/dm-constraints.rb
 lib/dm-constraints/data_objects_adapter.rb
+lib/dm-constraints/mysql_adapter.rb
+lib/dm-constraints/postgres_adapter.rb
 spec/integration/constraints_spec.rb
 spec/spec.opts
 spec/spec_helper.rb

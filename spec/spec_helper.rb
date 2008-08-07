@@ -21,8 +21,7 @@ def load_driver(name, default_uri)
   end
 end
 
-HAS_SQLITE3  = load_driver(:sqlite3,  'sqlite3::memory:')
 HAS_POSTGRES = load_driver(:postgres, 'postgres://postgres@localhost/dm_core_test')
 HAS_MYSQL    = load_driver(:mysql,    'mysql://localhost/dm_core_test')
-
+DataObjects::Mysql.logger = DataObjects::Logger.new('log/dm.log', 0)
 require Pathname(__FILE__).dirname.expand_path.parent + 'lib/dm-constraints'

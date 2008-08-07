@@ -16,6 +16,13 @@ require Pathname(__FILE__).dirname.expand_path.parent + 'spec_helper'
         property :size,      Integer
       end
 
+      class Farmer
+        include DataMapper::Resource
+
+        property :first_name, String, :key => true
+        property :last_name, String,  :key => true
+      end
+
       class Cow
         include DataMapper::Resource
         include DataMapper::Constraints
@@ -24,13 +31,18 @@ require Pathname(__FILE__).dirname.expand_path.parent + 'spec_helper'
         property :name,      String
         property :breed,     String
         belongs_to :stable
+        belongs_to :farmer
       end
 
       class Stable
         has n, :cows
       end
 
-      DataMapper::AutoMigrator.auto_migrate(:default, Stable, Cow)
+      class Farmer
+        has n, :cows
+      end
+
+      DataMapper::AutoMigrator.auto_migrate(:default, Stable, Farmer, Cow)
     end
 
     it "is included when DataMapper::Searchable is loaded" do
@@ -40,6 +52,11 @@ require Pathname(__FILE__).dirname.expand_path.parent + 'spec_helper'
     it "should be able to create related objects with a foreign key constraint" do
       @s  = Stable.create(:location => "Hometown")
       @c1 = Cow.create(:name => "Bea", :stable => @s)
+    end
+
+    it "should be able to create related objects with a composite foreign key constraint" do
+      @f  = Farmer.create(:first_name => "John", :last_name => "Doe")
+      @c1 = Cow.create(:name => "Bea", :farmer => @f)
     end
 
     it "should not be able to create related objects with a failing foreign key constraint" do
