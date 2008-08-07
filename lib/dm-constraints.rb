@@ -12,11 +12,14 @@ require Pathname(__FILE__).dirname.expand_path / 'dm-constraints' / 'postgres_ad
 require Pathname(__FILE__).dirname.expand_path / 'dm-constraints' / 'mysql_adapter'
 
 module DataMapper
+  class AutoMigrator
+    include Extlib::Hook
+    include DataMapper::Constraints::DataObjectsAdapter::Migration
+  end
+
   module Adapters
     class DataObjectsAdapter
-      include Extlib::Hook
       include DataMapper::Constraints::DataObjectsAdapter::SQL
-      include DataMapper::Constraints::DataObjectsAdapter::Migration
     end
 
     class MysqlAdapter

@@ -42,7 +42,7 @@ require Pathname(__FILE__).dirname.expand_path.parent + 'spec_helper'
         has n, :cows
       end
 
-      DataMapper::AutoMigrator.auto_migrate(:default, Stable, Farmer, Cow)
+      DataMapper::auto_migrate!
     end
 
     it "is included when DataMapper::Searchable is loaded" do
