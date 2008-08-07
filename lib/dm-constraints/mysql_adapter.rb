@@ -7,7 +7,7 @@ module DataMapper
           model.many_to_one_relationships.map do |relationship|
             foreign_table = relationship.parent_model.storage_name(repository_name)
             "ALTER TABLE #{quote_table_name(model.storage_name(repository_name))} 
-             DROP FOREIGN KEY #{foreign_table}_fk"
+             DROP FOREIGN KEY #{relationship.name}_fk"
           end
         end
 
