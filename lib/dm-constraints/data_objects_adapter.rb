@@ -15,12 +15,13 @@ module DataMapper
 
         def destroy_constraints_statements(repository_name, model)
           model.many_to_one_relationships.map do |relationship|
-            foreign_table = relationship.parent_model.storage_name(repository_name)
-            "ALTER TABLE #{quote_table_name(model.storage_name(repository_name))} 
-             DROP CONSTRAINT #{relationship.name}_fk"
-          end
+            if constraint_exists?(model.storage_name, "#{relationship.name}_fk")
+              foreign_table = relationship.parent_model.storage_name(repository_name)
+              "ALTER TABLE #{quote_table_name(model.storage_name(repository_name))} 
+               DROP CONSTRAINT #{relationship.name}_fk"
+            end
+          end.compact
         end
-
       end
 
       module Migration
